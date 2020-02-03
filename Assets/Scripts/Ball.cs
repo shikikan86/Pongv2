@@ -16,10 +16,13 @@ public class Ball : MonoBehaviour
 
     public Text display1;
     public Text display2;
+    public Text display3;
 
     public float x;
     public float y;
 
+    public Material[] material;
+    Renderer rend;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,11 @@ public class Ball : MonoBehaviour
 
         display1.text = p1score.ToString();
         display2.text = p2score.ToString();
+        display3.text = "";
+
+        rend = GetComponent<Renderer>();
+        rend.enabled = true;
+        rend.sharedMaterial = material[0];
     }
 
     // Update is called once per frame
@@ -48,6 +56,7 @@ public class Ball : MonoBehaviour
         //v = (x, y, 0f);
         
 
+        //Player 2 Scores
         if(this.transform.position.x < -20)
         {
             this.transform.position = new Vector3(0f, 0f, 0f);
@@ -58,6 +67,7 @@ public class Ball : MonoBehaviour
             Debug.Log("Player 2 scored 1 point. Total: " + p1score + " - " + p2score);
         }
 
+        //Player 1 Scores
         if (this.transform.position.x > 20)
         {
             this.transform.position = new Vector3(0f, 0f, 0f);
@@ -69,13 +79,16 @@ public class Ball : MonoBehaviour
 
         }
 
-      
+      //Reset score if either player wins and hold ball in place
         if (p1score > 10)
         {
             p1score = 0;
             p2score = 0;
             Debug.Log("Player 1 Wins!");
             rb.velocity = new Vector3(0f, 0f, 0f);
+            display1.text = p1score.ToString();
+            display2.text = p2score.ToString();
+            display3.text = "Player 1 Wins!";
         }
 
         if(p2score > 10)
@@ -84,6 +97,9 @@ public class Ball : MonoBehaviour
             p2score = 0;
             Debug.Log("Player 2 Wins!");
             rb.velocity = new Vector3(0f, 0f, 0f);
+            display1.text = p1score.ToString();
+            display2.text = p2score.ToString();
+            display3.text = "Player 2 Wins!";
         }
 
 
@@ -94,7 +110,7 @@ public class Ball : MonoBehaviour
     {
         speed = speed + 0.5f;
 
-        //this keeps the ball moving in the same direction on the y axis
+        //this keeps the ball moving in the same direction on the y axis when it hits the paddle
         float yspeed;
         if (y < 0)
         {
@@ -107,10 +123,12 @@ public class Ball : MonoBehaviour
         if (collision.collider.name == "Paddle1")
         {
             rb.velocity = new Vector3(speed, yspeed, 0f);
+            rend.sharedMaterial = material[1];
         }
         if (collision.collider.name == "Paddle2")
         {
             rb.velocity = new Vector3(-speed, yspeed, 0f);
+            rend.sharedMaterial = material[2];
         }
 
 
