@@ -25,5 +25,34 @@ public class Paddle : MonoBehaviour
         {
             transform.Translate(0f, Input.GetAxis("Vertical2") * speed * Time.deltaTime, 0f);
         }
+
+
+        //Fixes the paddles going out of bounds
+      if(transform.position.y < -4)
+        {
+            
+            if (isPaddle1)
+            {
+                this.transform.position = new Vector3(-9f, -3.99f, 0f);
+            }
+            else
+            {
+                this.transform.position = new Vector3(9f, -3.99f, 0f);
+            }
+            
+        }
+
+        if (transform.position.y > 4)
+        {
+            if (isPaddle1)
+            {
+                this.transform.position = new Vector3(-9f, 3.99f, 0f);
+            }
+            else
+            {
+                this.transform.position = new Vector3(9f, 3.99f, 0f);
+            }
+        }
+            
     }
 }
